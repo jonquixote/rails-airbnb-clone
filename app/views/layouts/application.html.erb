@@ -9,7 +9,46 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
   </head>
   <body>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '{your-app-id}',
+          cookie     : true,
+          xfbml      : true,
+          version    : '{latest-api-version}'
+        });
+          
+        FB.AppEvents.logPageView();   
+          
+      };
+
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+    </script>
+    <fb:login-button 
+      scope="public_profile,email"
+      onlogin="checkLoginState();">
+    </fb:login-button>
+    <%= render 'shared/navbar' %>
     <%= yield %>
     <%= javascript_include_tag 'application' %>
+    <%= render 'shared/flashes' %>
   </body>
 </html>
+
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
